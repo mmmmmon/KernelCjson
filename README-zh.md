@@ -4,11 +4,7 @@
 
 [简体中文](README-zh.md) or [English](README.md)  
 
-本项目是魔改版cjson，魔改于 [Cjson](https://github.com/DaveGamble/cJSON)。
-
-这是一个很棒的项目。
-
-### 现在cjson可以运行在内核中了！
+魔改版[Cjson](https://github.com/DaveGamble/cJSON),可以运行在Windows内核中
 
 </div>
 
