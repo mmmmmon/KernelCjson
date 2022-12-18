@@ -12,7 +12,7 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 ### not support float
 - The KernelCjson can't parse float something of json.
 
-  Because the operation float number in kernel is danger
+  Because the operation float number in kernel is danger.
   
   I was remove anything about float operation in cjson.
 
