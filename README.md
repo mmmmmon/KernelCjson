@@ -4,11 +4,7 @@
 
 [简体中文](README-zh.md) or [English](README.md)  
 
-This project was modifyed by [Cjson](https://github.com/DaveGamble/cJSON).
-
-That is a good json library.
-
-### Then now,The cjson can running on kernel!
+The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on windows kernel
 
 </div>
 
