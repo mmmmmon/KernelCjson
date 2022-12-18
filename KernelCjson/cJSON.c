@@ -348,6 +348,18 @@ loop_end:
         return false; /* parse_error */
     }
 
+    if (number >= INT_MAX)
+    {
+        item->valueint = INT_MAX;
+    }
+    else if (number <= INT_MIN)
+    {
+        item->valueint = INT_MIN;
+    }
+    else
+    {
+        item->valueint = (int)number;
+    }
     item->valueulong = number;
 
     item->type = cJSON_Number;
