@@ -9,15 +9,12 @@ typedef struct _MALLOC_HEADER
 	ULONG_PTR Size;
 }MALLOC_HEADER, * PMALLOC_HEADER;
 C_ASSERT(sizeof(MALLOC_HEADER) % sizeof(void*) == 0);
-
 PMALLOC_HEADER GET_MALLOC_HEADER(PVOID ptr) {
 	return (MALLOC_HEADER*)((PUCHAR)ptr - sizeof(MALLOC_HEADER));
 }
-
 PVOID GET_MALLOC_ADDRESS(PMALLOC_HEADER header) {
 	return (PVOID)((PUCHAR)header + sizeof(MALLOC_HEADER));
 }
-
 ULONG_PTR GET_MALLOC_SIZE(PVOID ptr) {
 	PMALLOC_HEADER header = GET_MALLOC_HEADER(ptr);
 
@@ -27,6 +24,7 @@ ULONG_PTR GET_MALLOC_SIZE(PVOID ptr) {
 	return header->Size;
 }
 
+#pragma warning(push)
 #pragma warning(disable:28251)
 
 _Check_return_ _CRT_JIT_INTRINSIC _CRTIMP

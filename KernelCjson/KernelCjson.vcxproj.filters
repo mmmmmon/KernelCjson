@@ -42,9 +42,6 @@
     <ClInclude Include="kcrt.h">
       <Filter>kcrt</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="kcrt_defect.h">
       <Filter>kcrt</Filter>
     </ClInclude>

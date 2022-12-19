@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.h"
+#include <ntifs.h>
 
 #if defined _NO_CRT_STDIO_INLINE
 #undef _CRT_STDIO_INLINE
