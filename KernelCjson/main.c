@@ -105,6 +105,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegistryPath)
                 ExFreePoolWithTag(buffer, 'tag');
             }
         }
+        CloseFile(handle);
     }
 	return STATUS_SUCCESS;
 }
