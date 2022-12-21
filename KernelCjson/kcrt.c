@@ -1,7 +1,4 @@
 #include "kcrt.h"
-#include "kcrt_defect.h"
-#define KCRT_POOL_DEFAULT_TAG	'kcrt'
-
 typedef struct _MALLOC_HEADER
 {
 	ULONG32 Tags;
@@ -26,16 +23,63 @@ ULONG_PTR GET_MALLOC_SIZE(PVOID ptr) {
 
 #pragma warning(push)
 #pragma warning(disable:28251)
-
-_Check_return_ _CRT_JIT_INTRINSIC _CRTIMP
-int __cdecl isalpha(_In_ int _C)
+int k_isalpha(_In_ int _C)
 {
 	return ((_C >= 'a' && _C <= 'z') || (_C >= 'A' && _C <= 'Z') ? 1 : 0);
 }
-
-__declspec(noalias)
-_ACRTIMP _CRT_HYBRIDPATCHABLE
-void __cdecl free(void* ptr) 
+unsigned long long k_strtoull(char const* str,char** end,int radix)
+{
+    const char* s = str;
+    unsigned long long acc;
+    int c;
+    unsigned long long cutoff;
+    int neg = 0, cutlim, any;
+    do {
+        c = *s++;
+    } while (isspace(c));
+    if (c == '-') {
+        neg = 1;
+        c = *s++;
+    }
+    else if (c == '+')
+        c = *s++;
+    if ((radix == 0 || radix == 16) &&
+        c == '0' && (*s == 'x' || *s == 'X')) {
+        c = s[1];
+        s += 2;
+        radix = 16;
+    }
+    if (radix == 0)
+        radix = c == '0' ? 8 : 10;
+    cutoff = (unsigned long long)ULLONG_MAX / (unsigned long long)radix;
+    cutlim = (unsigned long long)ULLONG_MAX % (unsigned long long)radix;
+    for (acc = 0, any = 0;; c = *s++) {
+        if (isdigit(c))
+            c -= '0';
+        else if (k_isalpha(c))
+            c -= isupper(c) ? 'A' - 10 : 'a' - 10;
+        else
+            break;
+        if (c >= radix)
+            break;
+        if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
+            any = -1;
+        else {
+            any = 1;
+            acc *= radix;
+            acc += c;
+        }
+    }
+    if (any < 0) {
+        acc = ULLONG_MAX;
+    }
+    else if (neg)
+        acc = 0 - acc;
+    if (end != 0)
+        *end = (char*)(any ? s - 1 : str);
+    return (acc);
+}
+void k_free(void* ptr) 
 {
 	if (ptr) {
 		MALLOC_HEADER* mhdr = GET_MALLOC_HEADER(ptr);
@@ -46,10 +90,8 @@ void __cdecl free(void* ptr)
 		ExFreePool(mhdr);
 	}
 }
-
-__declspec(noalias)
-_ACRTIMP _CRT_HYBRIDPATCHABLE
-void* __cdecl malloc(size_t size) {
+void* k_malloc(size_t size) 
+{
 	PMALLOC_HEADER mhdr = NULL;
 	const size_t new_size = size + sizeof(MALLOC_HEADER);
 
@@ -64,15 +106,13 @@ void* __cdecl malloc(size_t size) {
 
 	return NULL;
 }
-
-__declspec(noalias)
-_ACRTIMP _CRT_HYBRIDPATCHABLE
-void* __cdecl realloc(void* ptr, size_t new_size) {
+void* k_realloc(void* ptr, size_t new_size)
+{
 	if (!ptr) {
-		return malloc(new_size);
+		return k_malloc(new_size);
 	}
 	else if (new_size == 0) {
-		free(ptr);
+		k_free(ptr);
 		return NULL;
 	}
 	else {
@@ -82,11 +122,11 @@ void* __cdecl realloc(void* ptr, size_t new_size) {
 			return ptr;
 		}
 		else {
-			void* new_ptr = malloc(new_size);
+			void* new_ptr = k_malloc(new_size);
 
 			if (new_ptr) {
 				memcpy(new_ptr, ptr, old_size);
-				free(ptr);
+				k_free(ptr);
 				return new_ptr;
 			}
 		}
@@ -94,5 +134,4 @@ void* __cdecl realloc(void* ptr, size_t new_size) {
 
 	return NULL;
 }
-
 #pragma warning(pop)

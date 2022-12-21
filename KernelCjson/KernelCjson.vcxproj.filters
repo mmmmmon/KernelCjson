@@ -42,8 +42,5 @@
     <ClInclude Include="kcrt.h">
       <Filter>kcrt</Filter>
     </ClInclude>
-    <ClInclude Include="kcrt_defect.h">
-      <Filter>kcrt</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

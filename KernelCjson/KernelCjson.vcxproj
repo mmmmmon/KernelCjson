@@ -143,7 +143,6 @@
   <ItemGroup>
     <ClInclude Include="cJSON.h" />
     <ClInclude Include="kcrt.h" />
-    <ClInclude Include="kcrt_defect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

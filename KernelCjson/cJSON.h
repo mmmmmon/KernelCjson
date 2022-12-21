@@ -114,7 +114,6 @@ typedef struct cJSON
     /* The item's string, if type==cJSON_String  and type == cJSON_Raw */
     char *valuestring;
     /* writing to valueint is DEPRECATED, use cJSON_SetNumberValue instead */
-    int valueint;
     /* The item's number, if type==cJSON_Number */
     unsigned long long valueulong;
 

@@ -37,7 +37,7 @@
 #pragma warning (disable : 4001)
 #endif
 
-#include "kcrt_defect.h"
+#include "kcrt.h"
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -164,20 +164,20 @@ typedef struct internal_hooks
 /* work around MSVC error C2322: '...' address of dllimport '...' is not static */
 static void * CJSON_CDECL internal_malloc(size_t size)
 {
-    return malloc(size);
+    return k_malloc(size);
 }
 static void CJSON_CDECL internal_free(void *pointer)
 {
-    free(pointer);
+    k_free(pointer);
 }
 static void * CJSON_CDECL internal_realloc(void *pointer, size_t size)
 {
-    return realloc(pointer, size);
+    return k_realloc(pointer, size);
 }
 #else
-#define internal_malloc malloc
-#define internal_free free
-#define internal_realloc realloc
+#define internal_malloc k_malloc
+#define internal_free k_free
+#define internal_realloc k_realloc
 #endif
 
 /* strlen of character literals resolved at compile time */
@@ -211,19 +211,19 @@ CJSON_PUBLIC(void) cJSON_InitHooks(cJSON_Hooks* hooks)
     if (hooks == NULL)
     {
         /* Reset hooks */
-        global_hooks.allocate = malloc;
-        global_hooks.deallocate = free;
-        global_hooks.reallocate = realloc;
+        global_hooks.allocate = k_malloc;
+        global_hooks.deallocate = k_free;
+        global_hooks.reallocate = k_realloc;
         return;
     }
 
-    global_hooks.allocate = malloc;
+    global_hooks.allocate = k_malloc;
     if (hooks->malloc_fn != NULL)
     {
         global_hooks.allocate = hooks->malloc_fn;
     }
 
-    global_hooks.deallocate = free;
+    global_hooks.deallocate = k_free;
     if (hooks->free_fn != NULL)
     {
         global_hooks.deallocate = hooks->free_fn;
@@ -231,9 +231,9 @@ CJSON_PUBLIC(void) cJSON_InitHooks(cJSON_Hooks* hooks)
 
     /* use realloc only if both free and malloc are used */
     global_hooks.reallocate = NULL;
-    if ((global_hooks.allocate == malloc) && (global_hooks.deallocate == free))
+    if ((global_hooks.allocate == k_malloc) && (global_hooks.deallocate == k_free))
     {
-        global_hooks.reallocate = realloc;
+        global_hooks.reallocate = k_realloc;
     }
 }
 
@@ -332,6 +332,8 @@ static cJSON_bool parse_number(cJSON * const item, parse_buffer * const input_bu
             case '7':
             case '8':
             case '9':
+            case '+':
+            case '-':
                 number_c_string[i] = buffer_at_offset(input_buffer)[i];
                 break;
             default:
@@ -342,24 +344,12 @@ loop_end:
     number_c_string[i] = '\0';
 
     
-    number = strtoull((const char*)number_c_string, (char**)&after_end, 10);
+    number = k_strtoull((const char*)number_c_string, (char**)&after_end, 10);
     if (number_c_string == after_end)
     {
         return false; /* parse_error */
     }
 
-    if (number >= INT_MAX)
-    {
-        item->valueint = INT_MAX;
-    }
-    else if (number <= INT_MIN)
-    {
-        item->valueint = INT_MIN;
-    }
-    else
-    {
-        item->valueint = (int)number;
-    }
     item->valueulong = number;
 
     item->type = cJSON_Number;
@@ -371,19 +361,6 @@ loop_end:
 /* don't ask me, but the original cJSON_SetNumberValue returns an integer or double */
 CJSON_PUBLIC(unsigned long long) cJSON_SetNumberHelper(cJSON *object, unsigned long long number)
 {
-    if (number >= INT_MAX)
-    {
-        object->valueint = INT_MAX;
-    }
-    else if (number <= INT_MIN)
-    {
-        object->valueint = INT_MIN;
-    }
-    else
-    {
-        object->valueint = (int)number;
-    }
-
     return object->valueulong = number;
 }
 
@@ -1306,7 +1283,7 @@ static cJSON_bool parse_value(cJSON * const item, parse_buffer * const input_buf
     if (can_read(input_buffer, 4) && (strncmp((const char*)buffer_at_offset(input_buffer), "true", 4) == 0))
     {
         item->type = cJSON_True;
-        item->valueint = 1;
+        item->valueulong = 1;
         input_buffer->offset += 4;
         return true;
     }
@@ -2399,20 +2376,6 @@ CJSON_PUBLIC(cJSON *) cJSON_CreateNumber(unsigned long long num)
     {
         item->type = cJSON_Number;
         item->valueulong = num;
-
-        /* use saturation in case of overflow */
-        if (num >= INT_MAX)
-        {
-            item->valueint = INT_MAX;
-        }
-        else if (num <= INT_MIN)
-        {
-            item->valueint = INT_MIN;
-        }
-        else
-        {
-            item->valueint = (int)num;
-        }
     }
 
     return item;
@@ -2649,7 +2612,6 @@ CJSON_PUBLIC(cJSON *) cJSON_Duplicate(const cJSON *item, cJSON_bool recurse)
     }
     /* Copy over all vars */
     newitem->type = item->type & (~cJSON_IsReference);
-    newitem->valueint = item->valueint;
     newitem->valueulong = item->valueulong;
     if (item->valuestring)
     {
