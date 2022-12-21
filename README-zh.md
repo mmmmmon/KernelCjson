@@ -16,9 +16,9 @@
   
   所以我移除了cjson中所有关于浮点数的操作
 
-- cjson中超过int最大界限的数值会保存为浮点数，即保存在cJSON->valuedouble
+- 删除了cJSON* 中valueint与valuedouble成员
   
-  所以我经过了些修改讲这个成员修改成cJSON->valueulong（虽然叫ulong但他是unisgned long long 类型 = =）
+  有valueulong成员替换上述成员(虽然叫valueulong，但是他的类型是unsigned long long = =)
 
 ### 不够安全
 - 不要直接挪用此库
