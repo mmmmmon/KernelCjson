@@ -9,7 +9,7 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 </div>
 
 ## notice
-### not support float
+### no support float
 - The KernelCjson can't parse float something of json.
 
   Because the operation float number in kernel is danger.
@@ -20,7 +20,7 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 
   The valueulong(type is unsigned long long) replaced the above members
 
-### not enough security
+### no enough security
 - Don't use this lib direct.
 
 - I was not test something modifyed functions of KernelCjson.
