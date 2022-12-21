@@ -16,12 +16,12 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
   
   I was remove anything about float operation in cjson.
 
-- The anything greater than maximum of int of number was be saved in cJSON->valuedouble.
-  
-  I was modifyed the member valuedouble to valueulong(he's type is unsigned long long).
+- Remove valueint and valuedouble of members in cJSON* 
+
+  The valueulong(type is unsigned long long) replaced the above members
 
 ### not enough security
-- Don't to use this lib direct.
+- Don't use this lib direct.
 
 - I was not test something modifyed functions of KernelCjson.
 
