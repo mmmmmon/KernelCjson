@@ -16,9 +16,9 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
   
   I was removed anything about float operation in cjson.
 
-- Remove valueint and valuedouble of members in cJSON* 
+- Remove valueint and valuedouble of members in cJSON*.
 
-  The valueulong(type is unsigned long long) replaced the above members
+  The valueulong(type is unsigned long long) replaced the above members.
 
 ### no enough security
 - Don't use this lib direct.
