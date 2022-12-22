@@ -14,7 +14,7 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 
   Because the operation float number in kernel is danger.
   
-  I was remove anything about float operation in cjson.
+  I was removed anything about float operation in cjson.
 
 - Remove valueint and valuedouble of members in cJSON* 
 
