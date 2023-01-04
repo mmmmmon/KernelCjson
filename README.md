@@ -27,6 +27,6 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 
 - I don't promise it is stable,But i'm using good now.(xixi)
 
-## thank for
+## thanks for
 - https://github.com/sidyhe/dxx/blob/master/kcrt/kcrtc.c
 - https://github.com/kouzhudong/kwinjson
