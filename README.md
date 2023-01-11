@@ -20,12 +20,10 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 
   The valueulong(type is unsigned long long) replaced the above members.
 
-### no enough security
-- Don't use this lib direct.
-
-- I was not test something modifyed functions of KernelCjson.
-
-- I don't promise it is stable,But i'm using good now.(xixi)
+## Tested
+- Win7 [enabled verifier]
+- Win10 1903 [enabled verifier]
+- Win10 ltsc 2021 [enabled verifier]
 
 ## thanks for
 - https://github.com/sidyhe/dxx/blob/master/kcrt/kcrtc.c
