@@ -20,12 +20,12 @@
   
   有valueulong成员替换上述成员(虽然叫valueulong，但是他的类型是unsigned long long = =)
 
-### 不够安全
-- 不要直接挪用此库
-
-- 有些修改过的函数我并没有测试
-
-- 所以我不保证可以稳定执行，虽然我自己用着是挺稳定的（嘻嘻）
+## 已测试
+- Win7 [已开启验证器]
+- 
+- Win10 1903 [已开启验证器]
+- 
+- Win10 ltsc 2021 [已开启验证器]
 
 ## 感谢
 - https://github.com/sidyhe/dxx/blob/master/kcrt/kcrtc.c
