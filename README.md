@@ -20,6 +20,10 @@ The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on wi
 
   The valueulong(type is unsigned long long) replaced the above members.
 
+- If your Driver used C++, please disable C++ release.
+
+  Otherwise,Your Driver will be crash Unscheduled!
+
 ## tested
 - Win7 [enabled verifier]
 - Win10 1903 [enabled verifier]
