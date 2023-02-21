@@ -19,6 +19,8 @@
 - 删除了cJSON* 中valueint与valuedouble成员
   
   有valueulong成员替换上述成员(虽然叫valueulong，但是他的类型是unsigned long long = =)
+  
+- 如果你的驱动使用C++，请关掉C++上的代码优化
 
 ## 已测试
 - Win7 [已开启验证器]
