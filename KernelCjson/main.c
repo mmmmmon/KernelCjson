@@ -86,7 +86,8 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegistryPath)
         if (fileSize != 0)
         {
             __debugbreak();
-            void* buffer = ExAllocatePoolWithTag(NonPagedPool, fileSize, 'tag');
+            void* buffer = ExAllocatePoolWithTag(NonPagedPool, fileSize+1, 'tag');
+	    memset(buffer,0,fileSize+1);//why plus one? because the jcson will call strlen to get all buffer size,if the final str is no zero,this function will cross the border
             if (buffer != NULL)
             {
                 if (NT_SUCCESS(ReadFile(handle, buffer, fileSize)))
