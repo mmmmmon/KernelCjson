@@ -4,7 +4,7 @@
 
 [简体中文](README-zh.md) or [English](README.md)  
 
-The modifyed [cjson](https://github.com/DaveGamble/cJSON) that can running on windows kernel
+The modifyed [cjson](https://github.com/DaveGamble/cJSON) that able to running on windows kernel
 
 </div>
 
